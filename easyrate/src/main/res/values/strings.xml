@@ -1,3 +1,18 @@
 <resources>
     <string name="app_name">EasyRate</string>
+    <string name="rate_us">Rate us</string>
+    <string name="love_this_app">Love This App?</string>
+    <string name="first_msg">Your rating will help us to do better.</string>
+    <string name="review_1">That\'s not the experience we\'d like you to have. Please share your feedback below.</string>
+    <string name="review_2">Uh oh! Could you tell us more about what we could improve?</string>
+    <string name="review_3">Thanks for your Feedback, is there something specific that you think we could improve?</string>
+    <string name="review_4">Thank you! your feedback inspires us to improve. Would you mind giving us a 5?</string>
+    <string name="review_5">Thanks! Your awesome feedback just made our day! please rate us on Play Store.</string>
+    <string name="write_feedback">Write Feedback</string>
+    <string name="rate">Rate</string>
+    <string name="dev">DEV</string>
+    <string name="ui">UI</string>
+    <string name="qa">QA</string>
+    <string name="op">OP</string>
+    <string name="pm">PM</string>
 </resources>
