@@ -33,7 +33,7 @@ public class EasyRate {
     private TextView avatarTxt, avatarMsg;
     private Button ctaBtn;
     private SharedPreferences.Editor editor;
-
+    private OnCloseClick onCloseClick;
     private int DAYS_UNTIL_PROMPT = 3;//Default number of days
     private int LAUNCHES_UNTIL_PROMPT = 3;//Default number of launches
 
@@ -214,7 +214,11 @@ public class EasyRate {
         closeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                resetDelay();
+                if (onCloseClick != null)
+                    onCloseClick.onCloseClickListener();
+                else
+                    resetDelay(context);
+
                 d.dismiss();
             }
         });
@@ -290,23 +294,32 @@ public class EasyRate {
         return this;
     }
 
-    public void resetDelay() {
+    public static void resetDelay(Context context) {
+        SharedPreferences.Editor editor;
         SharedPreferences prefs = context.getSharedPreferences("apprater", 0);
         editor = prefs.edit();
+        editor.putBoolean("dontshowagain", false);
         editor.putLong("date_firstlaunch", 0);
         editor.putLong("launch_count", 0);
         editor.apply();
     }
 
-    public void dontShowAgain(Boolean showAgain) {
+    public static void dontShowAgain(Boolean dontShowAgain, Context context) {
+        SharedPreferences.Editor editor;
+
         SharedPreferences prefs = context.getSharedPreferences("apprater", 0);
         editor = prefs.edit();
-        editor.putBoolean("dontshowagain", showAgain);
+        editor.putBoolean("dontshowagain", dontShowAgain);
         editor.apply();
     }
 
-    public void setOnActionClickListener() {
+    public interface OnCloseClick {
+        void onCloseClickListener();
+    }
 
+    public EasyRate setOnCloseClickListener(OnCloseClick onCloseClick) {
+        this.onCloseClick = onCloseClick;
+        return this;
     }
 
 

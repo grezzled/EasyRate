@@ -25,7 +25,10 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EasyRate.init(MainActivity.this).setLaunchesDelay(2).setDaysDelay(0).build();
+                EasyRate.init(MainActivity.this)
+                        .setLaunchesDelay(2)
+                        .setDaysDelay(0)
+                        .build();
             }
         });
     }
