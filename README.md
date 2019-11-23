@@ -2,7 +2,7 @@
 [![](https://jitpack.io/v/grezzled/EasyRate.svg)](https://jitpack.io/#grezzled/EasyRate)
 
 EasyRate is an Android library for dealing with app ratings & feedbacks.
-In simple words, it shows a modern and well-designed to engage users to rate the app in Google Play. To avoid bad ratings, the CTA Button changes according to the user's review as Follow : 
+In simple words, it shows a modern and well-designed dialog to engage users to rate the app in Google Play. To avoid bad ratings, the CTA Button changes according to the user's review as Follow : 
 - Write Feedback: if review between 1 & 3 Stars
 - Rate: if a review is 4 or 5 Stars 
 
@@ -31,7 +31,7 @@ EasyRate.init(MainActivity.this)
         .setMailingContact("YOUR_EMAIL@email.com","write a subject","write a description")
         .show();
 ```
-Initiate to show dialog at an appropriate timig
+Initiate to show dialog at an appropriate timing
 ```java
 EasyRate.init(MainActivity.this)
         .setMailingContact("YOUR_EMAIL@email.com","write a subject","write a description")
