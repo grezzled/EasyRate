@@ -96,5 +96,5 @@ See the License for the specific language governing permissions and
 limitations under the License.
 ```
 
-Author
+## Author
 Grezzled - lotub.llc@gmail.com
