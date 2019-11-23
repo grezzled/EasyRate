@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">EasyRate</string>
     <string name="rate_us">Rate us</string>
-    <string name="love_this_app">Love This App?</string>
+    <string name="love_this_app">Love</string>
     <string name="first_msg">Your rating will help us to do better.</string>
     <string name="review_1">That\'s not the experience we\'d like you to have. Please share your feedback below.</string>
     <string name="review_2">Uh oh! Could you tell us more about what we could improve?</string>

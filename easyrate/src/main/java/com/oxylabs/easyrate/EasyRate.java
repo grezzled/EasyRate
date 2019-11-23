@@ -4,11 +4,13 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ApplicationInfo;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -30,12 +32,14 @@ public class EasyRate {
     private Context context;
     private Dialog d;
     private ImageView imgRev1, imgRev2, imgRev3, imgRev4, imgRev5, avatarImg, closeBtn;
-    private TextView avatarTxt, avatarMsg;
+    private TextView avatarTxt, avatarMsg, appTitle;
     private Button ctaBtn;
     private SharedPreferences.Editor editor;
     private OnCloseClick onCloseClick;
+    private OnFeedbackClick onFeedbackClick;
     private int DAYS_UNTIL_PROMPT = 3;//Default number of days
     private int LAUNCHES_UNTIL_PROMPT = 3;//Default number of launches
+    private String EMAIL_ADRESS, SUBJECT, TEXT_CONTENT;
 
     public static EasyRate init(Context context) {
         EasyRate easyRate = new EasyRate();
@@ -84,9 +88,26 @@ public class EasyRate {
         avatarMsg = view.findViewById(R.id.avatar_msg);
         ctaBtn = view.findViewById(R.id.cta_btn);
         closeBtn = view.findViewById(R.id.close_btn);
+        appTitle = view.findViewById(R.id.love_app);
+    }
+
+    private static String getApplicationName(Context context) {
+        ApplicationInfo applicationInfo = context.getApplicationInfo();
+        int stringId = applicationInfo.labelRes;
+        return stringId == 0 ? applicationInfo.nonLocalizedLabel.toString() : context.getString(stringId);
+    }
+
+    private void sendEmail() {
+        Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
+                "mailto", EMAIL_ADRESS, null));
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, SUBJECT);
+        emailIntent.putExtra(Intent.EXTRA_TEXT, TEXT_CONTENT);
+        context.startActivity(Intent.createChooser(emailIntent, "Send email..."));
     }
 
     private void initViews() {
+        String loveThisApp = context.getString(R.string.love_this_app) + " " + getApplicationName(context) + "?";
+        appTitle.setText(loveThisApp);
         setFilter(imgRev1, imgRev2, imgRev3, imgRev4, imgRev5);
 
         imgRev1.setOnClickListener(new View.OnClickListener() {
@@ -95,19 +116,31 @@ public class EasyRate {
                 removeFilter(imgRev1);
                 initIcons(context);
                 setFilter(imgRev2, imgRev3, imgRev4, imgRev5);
-                avatarImg.setImageDrawable(context.getResources().getDrawable(R.drawable.avatar_man_1));
+                avatarImg.setImageDrawable(context.getDrawable(R.drawable.avatar_man_1));
                 avatarImg.setImageDrawable(ResourcesCompat.getDrawable(context.getResources(), R.drawable.avatar_man_1, null));
                 avatarTxt.setText(context.getResources().getString(R.string.dev));
                 avatarMsg.setText(context.getResources().getString(R.string.review_1));
                 ctaBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        if (onFeedbackClick != null) {
+                            onFeedbackClick.onFeedBackClickListener();
+                            return;
+                        }
+                        if (EMAIL_ADRESS == null || SUBJECT == null || TEXT_CONTENT == null)
+                            return;
+                        sendEmail();
 
+                        if (editor != null) {
+                            editor.putBoolean("dontshowagain", true);
+                            editor.commit();
+                        }
+                        closeBtn.performClick();
                     }
                 });
                 ctaBtn.setText(context.getResources().getText(R.string.write_feedback));
                 ctaBtn.setEnabled(true);
-                ctaBtn.setBackground(context.getResources().getDrawable(R.drawable.round_corners_fill));
+                ctaBtn.setBackground(context.getDrawable(R.drawable.round_corners_fill));
             }
         });
 
@@ -116,21 +149,32 @@ public class EasyRate {
             public void onClick(View v) {
                 removeFilter(imgRev1, imgRev2);
                 initIcons(context);
-                setSameImg(context.getResources().getDrawable(R.drawable.emoji_angry), imgRev1, imgRev2);
+                setSameImg(context.getDrawable(R.drawable.emoji_angry), imgRev1, imgRev2);
                 setFilter(imgRev3, imgRev4, imgRev5);
-                avatarImg.setImageDrawable(context.getResources().getDrawable(R.drawable.avatar_girl_1));
+                avatarImg.setImageDrawable(context.getDrawable(R.drawable.avatar_girl_1));
                 avatarTxt.setText(context.getResources().getString(R.string.ui));
                 avatarMsg.setText(context.getResources().getString(R.string.review_2));
                 ctaBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        if (onFeedbackClick != null) {
+                            onFeedbackClick.onFeedBackClickListener();
+                            return;
+                        }
+                        if (EMAIL_ADRESS == null || SUBJECT == null || TEXT_CONTENT == null)
+                            return;
+                        sendEmail();
 
-
+                        if (editor != null) {
+                            editor.putBoolean("dontshowagain", true);
+                            editor.commit();
+                        }
+                        closeBtn.performClick();
                     }
                 });
                 ctaBtn.setText(context.getResources().getText(R.string.write_feedback));
                 ctaBtn.setEnabled(true);
-                ctaBtn.setBackground(context.getResources().getDrawable(R.drawable.round_corners_fill));
+                ctaBtn.setBackground(context.getDrawable(R.drawable.round_corners_fill));
             }
         });
 
@@ -139,21 +183,33 @@ public class EasyRate {
             public void onClick(View v) {
                 removeFilter(imgRev1, imgRev2, imgRev3);
                 initIcons(context);
-                setSameImg(context.getResources().getDrawable(R.drawable.emoji_thinking), imgRev1, imgRev2, imgRev3);
+                setSameImg(context.getDrawable(R.drawable.emoji_thinking), imgRev1, imgRev2, imgRev3);
                 setFilter(imgRev4, imgRev5);
-                avatarImg.setImageDrawable(context.getResources().getDrawable(R.drawable.avatar_boy));
+                avatarImg.setImageDrawable(context.getDrawable(R.drawable.avatar_boy));
                 avatarTxt.setText(context.getResources().getString(R.string.qa));
                 avatarMsg.setText(context.getResources().getString(R.string.review_3));
                 ctaBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        if (onFeedbackClick != null) {
+                            onFeedbackClick.onFeedBackClickListener();
+                            return;
+                        }
+                        if (EMAIL_ADRESS == null || SUBJECT == null || TEXT_CONTENT == null)
+                            return;
+                        sendEmail();
 
+                        if (editor != null) {
+                            editor.putBoolean("dontshowagain", true);
+                            editor.commit();
+                        }
+                        closeBtn.performClick();
 
                     }
                 });
                 ctaBtn.setText(context.getResources().getText(R.string.write_feedback));
                 ctaBtn.setEnabled(true);
-                ctaBtn.setBackground(context.getResources().getDrawable(R.drawable.round_corners_fill));
+                ctaBtn.setBackground(context.getDrawable(R.drawable.round_corners_fill));
             }
         });
 
@@ -162,9 +218,9 @@ public class EasyRate {
             public void onClick(View v) {
                 removeFilter(imgRev1, imgRev2, imgRev3, imgRev4);
                 initIcons(context);
-                setSameImg(context.getResources().getDrawable(R.drawable.emoji_happy), imgRev1, imgRev2, imgRev3, imgRev4);
+                setSameImg(context.getDrawable(R.drawable.emoji_happy), imgRev1, imgRev2, imgRev3, imgRev4);
                 setFilter(imgRev5);
-                avatarImg.setImageDrawable(context.getResources().getDrawable(R.drawable.avatar_man));
+                avatarImg.setImageDrawable(context.getDrawable(R.drawable.avatar_man));
                 avatarTxt.setText(context.getResources().getString(R.string.op));
                 avatarMsg.setText(context.getResources().getString(R.string.review_4));
                 ctaBtn.setOnClickListener(new View.OnClickListener() {
@@ -181,7 +237,7 @@ public class EasyRate {
                 });
                 ctaBtn.setText(context.getResources().getText(R.string.rate));
                 ctaBtn.setEnabled(true);
-                ctaBtn.setBackground(context.getResources().getDrawable(R.drawable.round_corners_fill));
+                ctaBtn.setBackground(context.getDrawable(R.drawable.round_corners_fill));
             }
         });
 
@@ -190,8 +246,8 @@ public class EasyRate {
             public void onClick(View v) {
                 removeFilter(imgRev1, imgRev2, imgRev3, imgRev4, imgRev5);
                 initIcons(context);
-                setSameImg(context.getResources().getDrawable(R.drawable.emoji_in_love), imgRev1, imgRev2, imgRev3, imgRev4, imgRev5);
-                avatarImg.setImageDrawable(context.getResources().getDrawable(R.drawable.avatar_girl));
+                setSameImg(context.getDrawable(R.drawable.emoji_in_love), imgRev1, imgRev2, imgRev3, imgRev4, imgRev5);
+                avatarImg.setImageDrawable(context.getDrawable(R.drawable.avatar_girl));
                 avatarTxt.setText(context.getResources().getString(R.string.pm));
                 avatarMsg.setText(context.getResources().getString(R.string.review_5));
                 ctaBtn.setOnClickListener(new View.OnClickListener() {
@@ -207,7 +263,7 @@ public class EasyRate {
                 });
                 ctaBtn.setText(context.getResources().getText(R.string.rate));
                 ctaBtn.setEnabled(true);
-                ctaBtn.setBackground(context.getResources().getDrawable(R.drawable.round_corners_fill));
+                ctaBtn.setBackground(context.getDrawable(R.drawable.round_corners_fill));
             }
         });
 
@@ -246,13 +302,12 @@ public class EasyRate {
     }
 
     private void initIcons(Context context) {
-        imgRev1.setImageDrawable(context.getResources().getDrawable(R.drawable.emoji_crying));
-        imgRev2.setImageDrawable(context.getResources().getDrawable(R.drawable.emoji_angry));
-        imgRev3.setImageDrawable(context.getResources().getDrawable(R.drawable.emoji_thinking));
-        imgRev4.setImageDrawable(context.getResources().getDrawable(R.drawable.emoji_happy));
-        imgRev5.setImageDrawable(context.getResources().getDrawable(R.drawable.emoji_in_love));
+        imgRev1.setImageDrawable(context.getDrawable(R.drawable.emoji_crying));
+        imgRev2.setImageDrawable(context.getDrawable(R.drawable.emoji_angry));
+        imgRev3.setImageDrawable(context.getDrawable(R.drawable.emoji_thinking));
+        imgRev4.setImageDrawable(context.getDrawable(R.drawable.emoji_happy));
+        imgRev5.setImageDrawable(context.getDrawable(R.drawable.emoji_in_love));
     }
-
 
     public void build() {
         // Should Show Dialog
@@ -294,6 +349,13 @@ public class EasyRate {
         return this;
     }
 
+    public EasyRate setMailingContact(String emailAddress, String subject, String textContent) {
+        EMAIL_ADRESS = emailAddress;
+        SUBJECT = subject;
+        TEXT_CONTENT = textContent;
+        return this;
+    }
+
     public static void resetDelay(Context context) {
         SharedPreferences.Editor editor;
         SharedPreferences prefs = context.getSharedPreferences("apprater", 0);
@@ -317,8 +379,17 @@ public class EasyRate {
         void onCloseClickListener();
     }
 
+    public interface OnFeedbackClick {
+        void onFeedBackClickListener();
+    }
+
     public EasyRate setOnCloseClickListener(OnCloseClick onCloseClick) {
         this.onCloseClick = onCloseClick;
+        return this;
+    }
+
+    public EasyRate setOnFeedbackClickListener(OnFeedbackClick onFeedbackClick) {
+        this.onFeedbackClick = onFeedbackClick;
         return this;
     }
 

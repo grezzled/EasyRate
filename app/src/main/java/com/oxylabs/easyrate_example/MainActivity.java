@@ -1,5 +1,6 @@
 package com.oxylabs.easyrate_example;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -11,6 +12,7 @@ import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -20,15 +22,28 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        final Context context = this;
+       // EasyRate.resetDelay(context);
+        EasyRate.init(MainActivity.this)
+                .setLaunchesDelay(1)
+                .setDaysDelay(0)
+                .setOnCloseClickListener(new EasyRate.OnCloseClick() {
+                    @Override
+                    public void onCloseClickListener() {
+                        EasyRate.resetDelay(context);
+                    }
+                })
+                .setMailingContact("lotub.llc@gmail.com","this is a subject","this is a description")
+                .build();
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 EasyRate.init(MainActivity.this)
-                        .setLaunchesDelay(2)
-                        .setDaysDelay(0)
-                        .build();
+                        .setMailingContact("lotub.llc@gmail.com","this is a subject","this is a description")
+                        .show();
+
             }
         });
     }
@@ -54,4 +69,5 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
 }
