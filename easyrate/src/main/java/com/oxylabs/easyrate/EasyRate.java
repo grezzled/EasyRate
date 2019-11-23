@@ -116,7 +116,7 @@ public class EasyRate {
                 removeFilter(imgRev1);
                 initIcons(context);
                 setFilter(imgRev2, imgRev3, imgRev4, imgRev5);
-                avatarImg.setImageDrawable(context.getDrawable(R.drawable.avatar_man_1));
+                avatarImg.setImageDrawable(context.getResources().getDrawable(R.drawable.avatar_man_1));
                 avatarImg.setImageDrawable(ResourcesCompat.getDrawable(context.getResources(), R.drawable.avatar_man_1, null));
                 avatarTxt.setText(context.getResources().getString(R.string.dev));
                 avatarMsg.setText(context.getResources().getString(R.string.review_1));
@@ -140,7 +140,7 @@ public class EasyRate {
                 });
                 ctaBtn.setText(context.getResources().getText(R.string.write_feedback));
                 ctaBtn.setEnabled(true);
-                ctaBtn.setBackground(context.getDrawable(R.drawable.round_corners_fill));
+                ctaBtn.setBackground(context.getResources().getDrawable(R.drawable.round_corners_fill));
             }
         });
 
@@ -149,9 +149,9 @@ public class EasyRate {
             public void onClick(View v) {
                 removeFilter(imgRev1, imgRev2);
                 initIcons(context);
-                setSameImg(context.getDrawable(R.drawable.emoji_angry), imgRev1, imgRev2);
+                setSameImg(context.getResources().getDrawable(R.drawable.emoji_angry), imgRev1, imgRev2);
                 setFilter(imgRev3, imgRev4, imgRev5);
-                avatarImg.setImageDrawable(context.getDrawable(R.drawable.avatar_girl_1));
+                avatarImg.setImageDrawable(context.getResources().getDrawable(R.drawable.avatar_girl_1));
                 avatarTxt.setText(context.getResources().getString(R.string.ui));
                 avatarMsg.setText(context.getResources().getString(R.string.review_2));
                 ctaBtn.setOnClickListener(new View.OnClickListener() {
@@ -174,7 +174,7 @@ public class EasyRate {
                 });
                 ctaBtn.setText(context.getResources().getText(R.string.write_feedback));
                 ctaBtn.setEnabled(true);
-                ctaBtn.setBackground(context.getDrawable(R.drawable.round_corners_fill));
+                ctaBtn.setBackground(context.getResources().getDrawable(R.drawable.round_corners_fill));
             }
         });
 
@@ -183,9 +183,9 @@ public class EasyRate {
             public void onClick(View v) {
                 removeFilter(imgRev1, imgRev2, imgRev3);
                 initIcons(context);
-                setSameImg(context.getDrawable(R.drawable.emoji_thinking), imgRev1, imgRev2, imgRev3);
+                setSameImg(context.getResources().getDrawable(R.drawable.emoji_thinking), imgRev1, imgRev2, imgRev3);
                 setFilter(imgRev4, imgRev5);
-                avatarImg.setImageDrawable(context.getDrawable(R.drawable.avatar_boy));
+                avatarImg.setImageDrawable(context.getResources().getDrawable(R.drawable.avatar_boy));
                 avatarTxt.setText(context.getResources().getString(R.string.qa));
                 avatarMsg.setText(context.getResources().getString(R.string.review_3));
                 ctaBtn.setOnClickListener(new View.OnClickListener() {
@@ -209,7 +209,7 @@ public class EasyRate {
                 });
                 ctaBtn.setText(context.getResources().getText(R.string.write_feedback));
                 ctaBtn.setEnabled(true);
-                ctaBtn.setBackground(context.getDrawable(R.drawable.round_corners_fill));
+                ctaBtn.setBackground(context.getResources().getDrawable(R.drawable.round_corners_fill));
             }
         });
 
@@ -218,9 +218,9 @@ public class EasyRate {
             public void onClick(View v) {
                 removeFilter(imgRev1, imgRev2, imgRev3, imgRev4);
                 initIcons(context);
-                setSameImg(context.getDrawable(R.drawable.emoji_happy), imgRev1, imgRev2, imgRev3, imgRev4);
+                setSameImg(context.getResources().getDrawable(R.drawable.emoji_happy), imgRev1, imgRev2, imgRev3, imgRev4);
                 setFilter(imgRev5);
-                avatarImg.setImageDrawable(context.getDrawable(R.drawable.avatar_man));
+                avatarImg.setImageDrawable(context.getResources().getDrawable(R.drawable.avatar_man));
                 avatarTxt.setText(context.getResources().getString(R.string.op));
                 avatarMsg.setText(context.getResources().getString(R.string.review_4));
                 ctaBtn.setOnClickListener(new View.OnClickListener() {
@@ -237,7 +237,7 @@ public class EasyRate {
                 });
                 ctaBtn.setText(context.getResources().getText(R.string.rate));
                 ctaBtn.setEnabled(true);
-                ctaBtn.setBackground(context.getDrawable(R.drawable.round_corners_fill));
+                ctaBtn.setBackground(context.getResources().getDrawable(R.drawable.round_corners_fill));
             }
         });
 
@@ -246,8 +246,8 @@ public class EasyRate {
             public void onClick(View v) {
                 removeFilter(imgRev1, imgRev2, imgRev3, imgRev4, imgRev5);
                 initIcons(context);
-                setSameImg(context.getDrawable(R.drawable.emoji_in_love), imgRev1, imgRev2, imgRev3, imgRev4, imgRev5);
-                avatarImg.setImageDrawable(context.getDrawable(R.drawable.avatar_girl));
+                setSameImg(context.getResources().getDrawable(R.drawable.emoji_in_love), imgRev1, imgRev2, imgRev3, imgRev4, imgRev5);
+                avatarImg.setImageDrawable(context.getResources().getDrawable(R.drawable.avatar_girl));
                 avatarTxt.setText(context.getResources().getString(R.string.pm));
                 avatarMsg.setText(context.getResources().getString(R.string.review_5));
                 ctaBtn.setOnClickListener(new View.OnClickListener() {
@@ -263,7 +263,7 @@ public class EasyRate {
                 });
                 ctaBtn.setText(context.getResources().getText(R.string.rate));
                 ctaBtn.setEnabled(true);
-                ctaBtn.setBackground(context.getDrawable(R.drawable.round_corners_fill));
+                ctaBtn.setBackground(context.getResources().getDrawable(R.drawable.round_corners_fill));
             }
         });
 
@@ -302,11 +302,11 @@ public class EasyRate {
     }
 
     private void initIcons(Context context) {
-        imgRev1.setImageDrawable(context.getDrawable(R.drawable.emoji_crying));
-        imgRev2.setImageDrawable(context.getDrawable(R.drawable.emoji_angry));
-        imgRev3.setImageDrawable(context.getDrawable(R.drawable.emoji_thinking));
-        imgRev4.setImageDrawable(context.getDrawable(R.drawable.emoji_happy));
-        imgRev5.setImageDrawable(context.getDrawable(R.drawable.emoji_in_love));
+        imgRev1.setImageDrawable(context.getResources().getDrawable(R.drawable.emoji_crying));
+        imgRev2.setImageDrawable(context.getResources().getDrawable(R.drawable.emoji_angry));
+        imgRev3.setImageDrawable(context.getResources().getDrawable(R.drawable.emoji_thinking));
+        imgRev4.setImageDrawable(context.getResources().getDrawable(R.drawable.emoji_happy));
+        imgRev5.setImageDrawable(context.getResources().getDrawable(R.drawable.emoji_in_love));
     }
 
     public void build() {
