@@ -39,6 +39,7 @@
                     android:layout_height="40dp"
                     android:src="@drawable/ic_close"
                     android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
                     />
 
                 <TextView
@@ -143,10 +144,13 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:layout_toEndOf="@+id/avatar_img"
+                    android:layout_toRightOf="@+id/avatar_img"
                     android:background="@drawable/bubble_coming"
                     android:paddingStart="30dp"
+                    android:paddingLeft="30dp"
                     android:paddingTop="10dp"
                     android:paddingEnd="10dp"
+                    android:paddingRight="10dp"
                     android:paddingBottom="10dp"
                     android:text="@string/first_msg"
                     android:textAllCaps="false"
@@ -160,10 +164,11 @@
                 android:layout_margin="20dp"
                 android:background="@drawable/round_corners_fill_gray"
                 android:text="@string/rate"
-                android:textColor="@color/white"
+                android:textColor="@color/dim"
                 />
 
         </LinearLayout>
+
     </LinearLayout>
 
 

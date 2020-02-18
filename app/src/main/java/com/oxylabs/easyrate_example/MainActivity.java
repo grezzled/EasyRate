@@ -25,27 +25,21 @@ public class MainActivity extends AppCompatActivity {
         final Context context = this;
        // EasyRate.resetDelay(context);
         EasyRate.init(MainActivity.this)
-                .setLaunchesDelay(1)
-                .setDaysDelay(0)
-                .setOnCloseClickListener(new EasyRate.OnCloseClick() {
-                    @Override
-                    public void onCloseClickListener() {
-                        EasyRate.resetDelay(context);
-                    }
-                })
                 .setMailingContact("lotub.llc@gmail.com","this is a subject","this is a description")
+                .setLaunchesDelay(2) // App Launched more than 10 times
+                .setDaysDelay(0) // App is launched more than 7 days later than installation.
                 .build();
 
         FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                EasyRate.init(MainActivity.this)
-                        .setMailingContact("lotub.llc@gmail.com","this is a subject","this is a description")
-                        .show();
-
-            }
-        });
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                EasyRate.init(MainActivity.this)
+//                        .setMailingContact("lotub.llc@gmail.com","this is a subject?:","this is a description")
+//                        .show();
+//
+//            }
+//        });
     }
 
     @Override

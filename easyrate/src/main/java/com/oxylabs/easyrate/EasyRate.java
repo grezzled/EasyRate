@@ -10,16 +10,20 @@ import android.graphics.ColorMatrixColorFilter;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.Build;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.core.content.res.ResourcesCompat;
+
+import java.net.URI;
 
 
 /**
@@ -39,7 +43,7 @@ public class EasyRate {
     private OnFeedbackClick onFeedbackClick;
     private int DAYS_UNTIL_PROMPT = 3;//Default number of days
     private int LAUNCHES_UNTIL_PROMPT = 3;//Default number of launches
-    private String EMAIL_ADRESS, SUBJECT, TEXT_CONTENT;
+    private String EMAIL_ADDRESS, SUBJECT, TEXT_CONTENT;
 
     public static EasyRate init(Context context) {
         EasyRate easyRate = new EasyRate();
@@ -52,10 +56,11 @@ public class EasyRate {
     public void show() {
         d = new Dialog(context);
         // Inflate layout and add it to dialog
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        // LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater inflater = LayoutInflater.from(context);
         if (inflater == null)
             return;
-        View view = inflater.inflate(R.layout.view_easy_rate, null);
+        View view = inflater.inflate(R.layout.view_easy_rate, new LinearLayout(context), false);
 
         bindViews(view);
         initViews();
@@ -69,13 +74,11 @@ public class EasyRate {
             window.setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
             lp.copyFrom(window.getAttributes());
             lp.width = WindowManager.LayoutParams.MATCH_PARENT;
-            lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+            lp.height = WindowManager.LayoutParams.MATCH_PARENT;
             window.setAttributes(lp);
         }
-
         d.show();
     }
-
 
     private void bindViews(View view) {
         imgRev1 = view.findViewById(R.id.rev1_img);
@@ -98,11 +101,18 @@ public class EasyRate {
     }
 
     private void sendEmail() {
-        Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
-                "mailto", EMAIL_ADRESS, null));
-        emailIntent.putExtra(Intent.EXTRA_SUBJECT, SUBJECT);
-        emailIntent.putExtra(Intent.EXTRA_TEXT, TEXT_CONTENT);
-        context.startActivity(Intent.createChooser(emailIntent, "Send email..."));
+
+        Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
+        String uriText = "mailto:"+EMAIL_ADDRESS + "?subject=" + Uri.encode(SUBJECT) + "&body=" + Uri.encode(TEXT_CONTENT);
+        emailIntent.setData(Uri.parse(uriText));
+        if (emailIntent.resolveActivity(context.getPackageManager()) != null) {
+            try {
+                context.startActivity(Intent.createChooser(emailIntent, "Send mail..."));
+            } catch (android.content.ActivityNotFoundException ex) {
+                Toast.makeText(context, context.getResources().getString(R.string.no_email_client), Toast.LENGTH_SHORT).show();
+            }
+        }
+
     }
 
     private void initViews() {
@@ -127,15 +137,15 @@ public class EasyRate {
                             onFeedbackClick.onFeedBackClickListener();
                             return;
                         }
-                        if (EMAIL_ADRESS == null || SUBJECT == null || TEXT_CONTENT == null)
+                        if (EMAIL_ADDRESS == null || SUBJECT == null || TEXT_CONTENT == null)
                             return;
                         sendEmail();
 
                         if (editor != null) {
                             editor.putBoolean("dontshowagain", true);
-                            editor.commit();
+                            editor.apply();
                         }
-                        closeBtn.performClick();
+                        d.dismiss();
                     }
                 });
                 ctaBtn.setText(context.getResources().getText(R.string.write_feedback));
@@ -161,15 +171,15 @@ public class EasyRate {
                             onFeedbackClick.onFeedBackClickListener();
                             return;
                         }
-                        if (EMAIL_ADRESS == null || SUBJECT == null || TEXT_CONTENT == null)
+                        if (EMAIL_ADDRESS == null || SUBJECT == null || TEXT_CONTENT == null)
                             return;
                         sendEmail();
 
                         if (editor != null) {
                             editor.putBoolean("dontshowagain", true);
-                            editor.commit();
+                            editor.apply();
                         }
-                        closeBtn.performClick();
+                        d.dismiss();
                     }
                 });
                 ctaBtn.setText(context.getResources().getText(R.string.write_feedback));
@@ -195,15 +205,15 @@ public class EasyRate {
                             onFeedbackClick.onFeedBackClickListener();
                             return;
                         }
-                        if (EMAIL_ADRESS == null || SUBJECT == null || TEXT_CONTENT == null)
+                        if (EMAIL_ADDRESS == null || SUBJECT == null || TEXT_CONTENT == null)
                             return;
                         sendEmail();
 
                         if (editor != null) {
                             editor.putBoolean("dontshowagain", true);
-                            editor.commit();
+                            editor.apply();
                         }
-                        closeBtn.performClick();
+                        d.dismiss();
 
                     }
                 });
@@ -229,9 +239,9 @@ public class EasyRate {
                         context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + context.getPackageName())));
                         if (editor != null) {
                             editor.putBoolean("dontshowagain", true);
-                            editor.commit();
+                            editor.apply();
                         }
-                        closeBtn.performClick();
+                        d.dismiss();
 
                     }
                 });
@@ -255,10 +265,11 @@ public class EasyRate {
                     public void onClick(View v) {
                         context.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + context.getPackageName())));
                         if (editor != null) {
+                            Log.d("log123","Here");
                             editor.putBoolean("dontshowagain", true);
-                            editor.commit();
+                            editor.apply();
                         }
-                        closeBtn.performClick();
+                        d.dismiss();
                     }
                 });
                 ctaBtn.setText(context.getResources().getText(R.string.rate));
@@ -350,7 +361,7 @@ public class EasyRate {
     }
 
     public EasyRate setMailingContact(String emailAddress, String subject, String textContent) {
-        EMAIL_ADRESS = emailAddress;
+        EMAIL_ADDRESS = emailAddress;
         SUBJECT = subject;
         TEXT_CONTENT = textContent;
         return this;
