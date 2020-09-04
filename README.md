@@ -21,7 +21,7 @@ allprojects {
 Step 2. Add the dependency
 
 ```java
-implementation 'com.github.grezzled:EasyRate:1.0.3'
+implementation 'com.github.grezzled:EasyRate:1.0.2'
 ```
 
 ## Basic Usage
